@@ -1,9 +1,13 @@
 # redux-modern-crud
 
+[![NPM version][npm-svg]][npm]
 [![Build status][travis-svg]][travis]
 
+[npm]: https://www.npmjs.com/package/redux-modern-crud
+[npm-svg]: https://img.shields.io/npm/v/redux-modern-crud.svg?style=flat
 [travis]: https://travis-ci.org/zugarzeeker/redux-modern-crud
 [travis-svg]: https://img.shields.io/travis/zugarzeeker/redux-modern-crud.svg?style=flat
+
 
 A library that helps you to manage `CRUD` for `Redux`.
 
@@ -128,6 +132,7 @@ const mergeReducer = (multiReducers) => {
 
 const createInteractor = (actions) => {
   const { REQUEST, SUCCESS, FAIL } = actions;
+  console.log(REQUEST);
   const httpRequest = (method, url, data) => ({
     types: [REQUEST, SUCCESS, FAIL],
     promise: (client) => client[method](url, { data })

@@ -2,9 +2,12 @@
   "name": "redux-modern-crud",
   "version": "1.0.0",
   "description": "A library that helps you to manage `CRUD` for `Redux`.",
-  "main": "dist/redux-crud.js",
+  "main": "lib/redux-crud.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:watch": "mocha --watch ./tests/**/*.spec.js --compilers js:babel-register",
+    "prepublish": "essay build",
+    "test": "essay test",
+    "babel:build": "babel src --out-dir lib"
   },
   "repository": {
     "type": "git",
@@ -14,10 +17,24 @@
     "redux",
     "crud"
   ],
+  "files": [
+    "lib",
+    "src"
+  ],
   "author": "Supanut Apikulvanich <supanut.overload@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/zugarzeeker/redux-modern-crud/issues"
   },
-  "homepage": "https://github.com/zugarzeeker/redux-modern-crud#readme"
+  "homepage": "https://github.com/zugarzeeker/redux-modern-crud#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "circumstance": "^1.1.1",
+    "essay": "^3.0.1",
+    "mocha": "^3.0.1"
+  },
+  "dependencies": {
+    "lodash": "^4.14.1",
+    "redux-actions": "^0.10.1"
+  }
 }

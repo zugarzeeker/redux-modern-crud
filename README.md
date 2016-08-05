@@ -86,7 +86,6 @@ const initialCallback = {
   callbackFail: () => {},
 };
 
-
 const createActions = (prefix, key) => {
   const [REQUEST, SUCCESS, FAIL] = utility.getActionTypes(prefix, key);
   return { REQUEST, SUCCESS, FAIL };

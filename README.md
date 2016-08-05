@@ -93,7 +93,9 @@ const createActions = (prefix, key) => {
 };
 
 const createReducer = (actions, multipleCallback) => {
-  const { callbackWaiting, callbackSuccess, callbackFail } = { ...initialCallback, ...multipleCallback };
+  const { callbackWaiting, callbackSuccess, callbackFail } = {
+    ...initialCallback, ...multipleCallback
+  };
   const { REQUEST, SUCCESS, FAIL } = actions;
   const reducer = handleActions({
     [REQUEST]: (state, action) => {
@@ -125,7 +127,7 @@ const mergeReducer = (multiReducers) => {
   return reducer;
 };
 
-const createInteractor = (method, url, data, actions) => {
+const createInteractor = (actions) => {
   const { REQUEST, SUCCESS, FAIL } = actions;
   const httpRequest = (method, url, data) => ({
     types: [REQUEST, SUCCESS, FAIL],

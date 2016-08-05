@@ -1,0 +1,23 @@
+{
+  "name": "redux-modern-crud",
+  "version": "1.0.0",
+  "description": "A library that helps you to manage `CRUD` for `Redux`.",
+  "main": "dist/redux-crud.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zugarzeeker/redux-modern-crud.git"
+  },
+  "keywords": [
+    "redux",
+    "crud"
+  ],
+  "author": "Supanut Apikulvanich <supanut.overload@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zugarzeeker/redux-modern-crud/issues"
+  },
+  "homepage": "https://github.com/zugarzeeker/redux-modern-crud#readme"
+}

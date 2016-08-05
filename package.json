@@ -4,7 +4,6 @@
   "description": "A library that helps you to manage `CRUD` for `Redux`.",
   "main": "lib/redux-crud.js",
   "scripts": {
-    "test:watch": "mocha --watch ./tests/**/*.spec.js --compilers js:babel-register",
     "prepublish": "essay build",
     "test": "essay test"
   },
@@ -29,8 +28,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "circumstance": "^1.1.1",
-    "essay": "^3.0.1",
-    "mocha": "^3.0.1"
+    "essay": "^3.0.1"
   },
   "dependencies": {
     "lodash": "^4.14.1",

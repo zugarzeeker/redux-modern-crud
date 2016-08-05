@@ -1,4 +1,10 @@
 # redux-modern-crud
+
+[![Build status][travis-svg]][travis]
+
+[travis]: https://travis-ci.org/zugarzeeker/redux-modern-crud
+[travis-svg]: https://img.shields.io/travis/zugarzeeker/redux-modern-crud.svg?style=flat
+
 A library that helps you to manage `CRUD` for `Redux`.
 
 ```js

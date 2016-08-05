@@ -6,8 +6,7 @@
   "scripts": {
     "test:watch": "mocha --watch ./tests/**/*.spec.js --compilers js:babel-register",
     "prepublish": "essay build",
-    "test": "essay test",
-    "babel:build": "babel src --out-dir lib"
+    "test": "essay test"
   },
   "repository": {
     "type": "git",

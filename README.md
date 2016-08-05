@@ -86,6 +86,7 @@ const initialCallback = {
   callbackFail: () => {},
 };
 
+
 const createActions = (prefix, key) => {
   const [REQUEST, SUCCESS, FAIL] = utility.getActionTypes(prefix, key);
   return { REQUEST, SUCCESS, FAIL };
@@ -133,14 +134,14 @@ const createInteractor = (method, url, data, actions) => {
   return httpRequest;
 };
 
-export default { createActions, createReducer, mergeReducer, createInteractor, utility };
+export { createActions, createReducer, mergeReducer, createInteractor, utility }
 ```
 
 ```js
 // utility.js
 import _ from 'lodash';
 
-const addPrefix = (prefix, asyncKeys, syncKeys) => {
+export const addPrefix = (prefix, asyncKeys, syncKeys) => {
   return _.fromPairs(
     asyncKeys.map(asyncKey => {
       return [(asyncKey || []), {
@@ -154,7 +155,7 @@ const addPrefix = (prefix, asyncKeys, syncKeys) => {
   );
 };
 
-const getActionTypes = (prefix, key) => {
+export const getActionTypes = (prefix, key) => {
   return [
     `${prefix}/${key}_REQUEST`,
     `${prefix}/${key}_SUCCESS`,

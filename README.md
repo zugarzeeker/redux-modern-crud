@@ -132,10 +132,13 @@ const mergeReducer = (multiReducers) => {
 
 const createInteractor = (actions) => {
   const { REQUEST, SUCCESS, FAIL } = actions;
-  console.log(REQUEST);
-  const httpRequest = (method, url, data) => ({
+  const sendRequest = (method) => (url, data) => ({
     types: [REQUEST, SUCCESS, FAIL],
     promise: (client) => client[method](url, { data })
+  });
+  const httpRequest = {};
+  ['get', 'put', 'post', 'delete', 'patch'].map((method) => {
+    return httpRequest[method] = sendRequest(method);
   });
   return httpRequest;
 };

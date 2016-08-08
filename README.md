@@ -13,19 +13,20 @@ A library that helps you to manage `CRUD` for `Redux`.
 
 ```js
 // main.js
+import utility from './utility';
+export { utility };
 export { createActions } from './create-actions';
 export { createReducer } from './create-reducer';
 export { createInteractor } from './create-interactor';
 export { mergeReducer } from './merge-reducer';
-export { utility } from './utiltiy';
 ```
 
 ```js
 // create-actions.js
-import { utility } from './utility';
+import { getActionsTypes } from './utility';
 
 export const createActions = (prefix, key) => {
-  const [REQUEST, SUCCESS, FAIL] = utility.getActionTypes(prefix, key);
+  const [REQUEST, SUCCESS, FAIL] = getActionTypes(prefix, key);
   return { REQUEST, SUCCESS, FAIL };
 };
 ```
@@ -169,7 +170,7 @@ export const mergeReducer = (multiReducers) => {
 // utility.js
 import _ from 'lodash';
 
-const addPrefix = (prefix, asyncKeys, syncKeys) => {
+export const addPrefix = (prefix, asyncKeys, syncKeys) => {
   return _.fromPairs(
     asyncKeys.map(asyncKey => {
       return [(asyncKey || []), {
@@ -183,13 +184,11 @@ const addPrefix = (prefix, asyncKeys, syncKeys) => {
   );
 };
 
-const getActionTypes = (prefix, key) => {
+export const getActionTypes = (prefix, key) => {
   return [
     `${prefix}/${key}_REQUEST`,
     `${prefix}/${key}_SUCCESS`,
     `${prefix}/${key}_FAIL`
   ];
 };
-
-export const utility = { addPrefix, getActionTypes };
 ```

@@ -13,7 +13,7 @@ A library that helps you to manage `CRUD` for `Redux`.
 
 ```js
 // main.js
-import utility from './utility';
+import * as utility from './utility';
 export { utility };
 export { createActions } from './create-actions';
 export { createReducer } from './create-reducer';
@@ -23,7 +23,7 @@ export { mergeReducer } from './merge-reducer';
 
 ```js
 // create-actions.js
-import { getActionsTypes } from './utility';
+import { getActionTypes } from './utility';
 
 export const createActions = (prefix, key) => {
   const [REQUEST, SUCCESS, FAIL] = getActionTypes(prefix, key);
@@ -151,7 +151,9 @@ export const createInteractor = (actions) => {
 ```js
 // merge-reducer.js
 import _ from 'lodash';
+import { initState } from './entity';
 
+const initialState = initState();
 export const mergeReducer = (multiReducers) => {
   const reducer = (state = initialState, action = initialAction) => {
     const found = _.find(multiReducers, ({ word, reducer }) => {

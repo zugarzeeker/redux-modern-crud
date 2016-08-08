@@ -12,6 +12,61 @@
 A library that helps you to manage `CRUD` for `Redux`.
 
 ```js
+// main.js
+export { createActions } from './create-actions';
+export { createReducer } from './create-reducer';
+export { createInteractor } from './create-interactor';
+export { mergeReducer } from './merge-reducer';
+export { utility } from './utiltiy';
+```
+
+```js
+// create-actions.js
+import { utility } from './utility';
+
+export const createActions = (prefix, key) => {
+  const [REQUEST, SUCCESS, FAIL] = utility.getActionTypes(prefix, key);
+  return { REQUEST, SUCCESS, FAIL };
+};
+```
+
+```js
+// create-reducer.js
+import { handleActions } from 'redux-actions';
+import { handleWaiting, handleSuccess, handleFail, initState } from './entity';
+
+const initialState = initState();
+const initialAction = { type: 'init action' };
+const defaultCallback = {
+  callbackWaiting: () => {},
+  callbackSuccess: () => {},
+  callbackFail: () => {},
+};
+
+export const createReducer = (actions, multipleCallback) => {
+  const { callbackWaiting, callbackSuccess, callbackFail } = {
+    ...defaultCallback, ...multipleCallback
+  };
+  const { REQUEST, SUCCESS, FAIL } = actions;
+  const reducer = handleActions({
+    [REQUEST]: (state, action) => {
+      callbackWaiting(state, action);
+      return handleWaiting()(state);
+    },
+    [SUCCESS]: (state, action) => {
+      callbackSuccess(state, action);
+      return handleSuccess(action.result)(state);
+    },
+    [FAIL]: (state, action) => {
+      callbackFail(state, action);
+      return handleFail(action.error)(state);
+    }
+  }, initialState);
+  return reducer;
+};
+```
+
+```js
 // entity.js
 export const isInitialState = (state) => !state.request && !state.success;
 export const isWaiting = (state) => state.waiting;
@@ -76,48 +131,27 @@ describe('CRUD Entity', () => {
 ```
 
 ```js
-// redux-crud.js
-import _ from 'lodash';
-import { handleActions } from 'redux-actions';
-import utility from './utility';
-import { handleWaiting, handleSuccess, handleFail, initState } from './entity';
-
-const initialState = initState();
-const initialAction = { type: 'init action' };
-const initialCallback = {
-  callbackWaiting: () => {},
-  callbackSuccess: () => {},
-  callbackFail: () => {},
-};
-
-const createActions = (prefix, key) => {
-  const [REQUEST, SUCCESS, FAIL] = utility.getActionTypes(prefix, key);
-  return { REQUEST, SUCCESS, FAIL };
-};
-
-const createReducer = (actions, multipleCallback) => {
-  const { callbackWaiting, callbackSuccess, callbackFail } = {
-    ...initialCallback, ...multipleCallback
-  };
+// create-interactor.js
+export const createInteractor = (actions) => {
   const { REQUEST, SUCCESS, FAIL } = actions;
-  const reducer = handleActions({
-    [REQUEST]: (state, action) => {
-      callbackWaiting(state, action);
-      return handleWaiting()(state);
-    },
-    [SUCCESS]: (state, action) => {
-      callbackSuccess(state, action);
-      return handleSuccess(action.result)(state);
-    },
-    [FAIL]: (state, action) => {
-      callbackFail(state, action);
-      return handleFail(action.error)(state);
-    }
-  }, initialState);
-  return reducer;
+  const formRequest = (method) => (url, data) => ({
+    types: [REQUEST, SUCCESS, FAIL],
+    promise: (client) => client[method](url, { data })
+  });
+  const httpRequest = {};
+  const methods = ['get', 'put', 'post', 'delete', 'patch'];
+  methods.map((method) => {
+    return httpRequest[method] = formRequest(method);
+  });
+  return httpRequest;
 };
+```
 
-const mergeReducer = (multiReducers) => {
+```js
+// merge-reducer.js
+import _ from 'lodash';
+
+export const mergeReducer = (multiReducers) => {
   const reducer = (state = initialState, action = initialAction) => {
     const found = _.find(multiReducers, ({ word, reducer }) => {
       return action.type.indexOf(word) !== -1;
@@ -129,28 +163,13 @@ const mergeReducer = (multiReducers) => {
   };
   return reducer;
 };
-
-const createInteractor = (actions) => {
-  const { REQUEST, SUCCESS, FAIL } = actions;
-  const sendRequest = (method) => (url, data) => ({
-    types: [REQUEST, SUCCESS, FAIL],
-    promise: (client) => client[method](url, { data })
-  });
-  const httpRequest = {};
-  ['get', 'put', 'post', 'delete', 'patch'].map((method) => {
-    return httpRequest[method] = sendRequest(method);
-  });
-  return httpRequest;
-};
-
-export { createActions, createReducer, mergeReducer, createInteractor, utility }
 ```
 
 ```js
 // utility.js
 import _ from 'lodash';
 
-export const addPrefix = (prefix, asyncKeys, syncKeys) => {
+const addPrefix = (prefix, asyncKeys, syncKeys) => {
   return _.fromPairs(
     asyncKeys.map(asyncKey => {
       return [(asyncKey || []), {
@@ -164,7 +183,7 @@ export const addPrefix = (prefix, asyncKeys, syncKeys) => {
   );
 };
 
-export const getActionTypes = (prefix, key) => {
+const getActionTypes = (prefix, key) => {
   return [
     `${prefix}/${key}_REQUEST`,
     `${prefix}/${key}_SUCCESS`,
@@ -172,8 +191,5 @@ export const getActionTypes = (prefix, key) => {
   ];
 };
 
-export default {
-  getActionTypes,
-  addPrefix,
-};
+export const utility = { addPrefix, getActionTypes };
 ```

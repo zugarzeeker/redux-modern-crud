@@ -2,7 +2,7 @@
   "name": "redux-modern-crud",
   "version": "1.1.0",
   "description": "A library that helps you to manage `CRUD` for `Redux`.",
-  "main": "lib/redux-crud.js",
+  "main": "lib/main.js",
   "scripts": {
     "prepublish": "essay build",
     "test": "essay test"

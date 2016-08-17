@@ -34,11 +34,10 @@ I saw app structure of `bemuse`, and it is easy to test and handling about `redu
         ├── actions
         │   ├── index.js
         │   └── sample.js
-        ├── create.js
         ├── entities
+        │   ├── index.js
         │   ├── sample.js
-        │   ├── sample.unit.spec.js
-        │   └── index.js
+        │   └── sample.unit.spec.js
         ├── interactors
         │   ├── index.js
         │   └── sample.js
@@ -289,4 +288,67 @@ export const getActionTypes = (prefix, key) => {
     `${prefix}/${key}_FAIL`
   ];
 };
+```
+
+### Testing
+`utility.test` uses [chai](http://chaijs.com/) to test the utility with function `expect`.
+
+```js
+// utility.test.js
+import { expect } from 'chai';
+import { addPrefix, getActionTypes } from './utility';
+describe('Utility', () => {
+  describe('addPrefix', () => {
+    it('should return correct action types when pass prefix and asyncKeys', () => {
+      const actualResult = addPrefix('A', ['X', 'Y']);
+      const expectedResult = {
+        X: {
+          REQUEST: 'A/X_REQUEST',
+          SUCCESS: 'A/X_SUCCESS',
+          FAIL: 'A/X_FAIL'
+        },
+        Y: {
+          REQUEST: 'A/Y_REQUEST',
+          SUCCESS: 'A/Y_SUCCESS',
+          FAIL: 'A/Y_FAIL'
+        }
+      };
+      expect(actualResult).to.eql(expectedResult);
+    })
+
+    it('should return correct action types when pass prefix and syncKeys', () => {
+      const actualResult = addPrefix('A', [], ['X', 'Y']);
+      const expectedResult = { X: 'A/X', Y: 'A/Y' };
+      expect(actualResult).to.eql(expectedResult);
+    })
+
+    it('should return correct action types when pass prefix, asyncKeys and syncKeys', () => {
+      const actualResult = addPrefix('A', ['U', 'V'], ['X', 'Y', 'Z']);
+      const expectedResult = {
+        U: {
+          REQUEST: 'A/U_REQUEST',
+          SUCCESS: 'A/U_SUCCESS',
+          FAIL: 'A/U_FAIL'
+        },
+        V: {
+          REQUEST: 'A/V_REQUEST',
+          SUCCESS: 'A/V_SUCCESS',
+          FAIL: 'A/V_FAIL'
+        },
+        X: 'A/X',
+        Y: 'A/Y',
+        Z: 'A/Z'
+      };
+      expect(actualResult).to.eql(expectedResult);
+    })
+  });
+
+  describe('getActionTypes', () => {
+    it('should return correct action types when pass prefix and key', () => {
+      const actualResult = getActionTypes('USER', 'LOGIN');
+      const expectedResult = ['USER/LOGIN_REQUEST', 'USER/LOGIN_SUCCESS', 'USER/LOGIN_FAIL'];
+      expect(actualResult).to.eql(expectedResult);
+    });
+  });
+});
 ```

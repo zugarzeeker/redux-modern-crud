@@ -135,9 +135,9 @@ describe('CRUD Entity', () => {
 // create-interactor.js
 export const createInteractor = (actions) => {
   const { REQUEST, SUCCESS, FAIL } = actions;
-  const formRequest = (method) => (url, data) => ({
+  const formRequest = (method) => (url, { data, params }) => ({
     types: [REQUEST, SUCCESS, FAIL],
-    promise: (client) => client[method](url, { data })
+    promise: (client) => client[method](url, { data, params })
   });
   const httpRequest = {};
   const methods = ['get', 'put', 'post', 'delete', 'patch'];

@@ -222,7 +222,7 @@ export const createInteractor = (actions) => {
     promise: (client) => client[method](url, { data, params })
   });
   const httpRequest = {};
-  const methods = ['get', 'put', 'post', 'delete', 'patch'];
+  const methods = ['get', 'put', 'post', 'del', 'patch'];
   methods.map((method) => {
     return httpRequest[method] = formRequest(method);
   });
